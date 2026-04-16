@@ -218,7 +218,7 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16 pb-8 md:pt-24 md:pb-12">
+        <section className="relative overflow-hidden pt-16 pb-8 md:pt-24 md:pb-12">
           {/* Background Video */}
           <video
             autoPlay
@@ -549,7 +549,7 @@ export default function Home() {
             <div className="mt-16 bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {[
-                  { value: "50+", label: "Product SKUs" },
+                  { value: "15+", label: "Product SKUs" },
                   { value: "8", label: "Suppliers" },
                   { value: "6", label: "Categories" },
                   { value: "< 2s", label: "Match Speed" },
@@ -569,7 +569,7 @@ export default function Home() {
         )}
       </main>
 
-
+      {/* ═══════════════ FOOTER ═══════════════ */}
       <footer className="bg-white border-t border-slate-200 py-8 mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
