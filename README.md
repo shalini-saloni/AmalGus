@@ -146,8 +146,4 @@ src/
     └── localMatcher.ts       # Offline fallback matching engine
 ```
 
----
 
-## License
-
-MIT
