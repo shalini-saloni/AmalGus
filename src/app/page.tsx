@@ -219,123 +219,101 @@ export default function Home() {
 
       <main>
         <section className="relative overflow-hidden pt-16 pb-8 md:pt-24 md:pb-12">
-          {/* Background Video */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover -z-10"
+
+  {/* Background Video */}
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="absolute inset-0 w-full h-full object-cover z-0"
+  >
+    <source src="/amalgus_background.mp4" type="video/mp4" />
+  </video>
+
+  {/* Gradient Overlay (better than plain black) */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 z-10" />
+
+  {/* Decorative blobs */}
+  <div className="absolute top-10 left-[10%] w-72 h-72 rounded-full bg-blue-400/10 blur-3xl float-slow pointer-events-none z-10" />
+  <div className="absolute top-40 right-[5%] w-96 h-96 rounded-full bg-cyan-400/10 blur-3xl float-medium pointer-events-none z-10" />
+  <div className="absolute -bottom-20 left-1/2 w-80 h-80 rounded-full bg-indigo-400/10 blur-3xl float-fast pointer-events-none z-10" />
+
+  {/* CONTENT */}
+  <div className="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 text-center text-white">
+
+    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur text-white border border-white/20 text-sm font-semibold mb-6 shadow-sm">
+      <Sparkles className="w-4 h-4" />
+      AI-Powered Smart Product Discovery
+    </div>
+
+    <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6">
+      Find the perfect glass.
+      <br />
+      <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
+        In plain English.
+      </span>
+    </h1>
+
+    <p className="text-white/80 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-10">
+      Describe what you&apos;re building and our intelligent matching
+      engine will instantly find the exact products, specs, and suppliers
+      you need from our glass marketplace.
+    </p>
+
+    {/* Search Bar */}
+    <div className="max-w-3xl mx-auto relative group">
+      <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 rounded-2xl blur-lg opacity-20 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
+      
+      <div className="relative bg-white/95 backdrop-blur rounded-xl shadow-xl ring-1 ring-white/20 hover:shadow-2xl transition-shadow duration-300">
+        <form onSubmit={handleSearch} className="flex items-center p-2">
+          
+          <Search className="w-5 h-5 text-slate-400 ml-4 hidden sm:block flex-shrink-0" />
+
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='e.g. "10mm laminated safety glass for balcony railings with UV protection"'
+            className="flex-1 bg-transparent px-4 py-4 sm:py-5 text-slate-800 focus:outline-none text-base sm:text-lg placeholder-slate-400 min-w-0"
+          />
+
+          <button
+            type="submit"
+            disabled={isSearching || !query.trim()}
+            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:from-slate-300 disabled:to-slate-300 text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold transition-all flex items-center gap-2 whitespace-nowrap"
           >
-            <source src="/amalgus_background.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-black/40 -z-10" />
-          
-          {/* Decorative blobs */}
-          <div className="absolute top-10 left-[10%] w-72 h-72 rounded-full bg-blue-400/10 blur-3xl float-slow pointer-events-none" />
-          <div className="absolute top-40 right-[5%] w-96 h-96 rounded-full bg-cyan-400/10 blur-3xl float-medium pointer-events-none" />
-          <div className="absolute -bottom-20 left-1/2 w-80 h-80 rounded-full bg-indigo-400/10 blur-3xl float-fast pointer-events-none" />
+            {isSearching ? "Matching…" : "Find Matches"}
+            {!isSearching && <Sparkles className="w-4 h-4 hidden sm:block" />}
+          </button>
 
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 border border-blue-200/60 text-sm font-semibold mb-6 shadow-sm">
-              <Sparkles className="w-4 h-4" />
-              AI-Powered Smart Product Discovery
-            </div>
+        </form>
+      </div>
+    </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6">
-              Find the perfect glass.
-              <br />
-              <span className="text-gradient bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600">
-                In plain English.
-              </span>
-            </h1>
+    {/* Sample queries */}
+    {!results.length && !isSearching && (
+      <div className="mt-8 max-w-3xl mx-auto">
+        <p className="text-xs text-white/60 mb-3 uppercase tracking-widest font-bold">
+          Try asking for
+        </p>
 
-            <p className="text-slate-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-10">
-              Describe what you&apos;re building and our intelligent matching
-              engine will instantly find the exact products, specs, and suppliers
-              you need from our glass marketplace.
-            </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {sampleQueries.map((q, i) => (
+            <button
+              key={i}
+              onClick={() => setQuery(q)}
+              className="text-sm bg-white/10 backdrop-blur border border-white/20 px-4 py-2 rounded-full text-white/80 hover:bg-white/20 transition-all"
+            >
+              “{q}”
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
 
-            {/* ═══ Search Bar ═══ */}
-            <div className="max-w-3xl mx-auto relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 rounded-2xl blur-lg search-glow opacity-20 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
-              <div className="relative bg-white rounded-xl shadow-xl ring-1 ring-slate-200/60 hover:shadow-2xl transition-shadow duration-300">
-                <form
-                  onSubmit={handleSearch}
-                  className="flex items-center p-2"
-                >
-                  <Search className="w-5 h-5 text-slate-400 ml-4 hidden sm:block flex-shrink-0" />
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder='e.g. "10mm laminated safety glass for balcony railings with UV protection"'
-                    className="flex-1 bg-transparent px-4 py-4 sm:py-5 text-slate-800 focus:outline-none text-base sm:text-lg placeholder-slate-400 min-w-0"
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    disabled={isSearching || !query.trim()}
-                    className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:from-slate-300 disabled:to-slate-300 disabled:cursor-not-allowed text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold transition-all flex items-center gap-2 whitespace-nowrap active:scale-[0.97] shadow-lg shadow-blue-500/25 disabled:shadow-none"
-                  >
-                    {isSearching ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          />
-                        </svg>
-                        Matching…
-                      </>
-                    ) : (
-                      <>
-                        Find Matches
-                        <Sparkles className="w-4 h-4 hidden sm:block" />
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            {/* Sample queries */}
-            {!results.length && !isSearching && (
-              <div className="mt-8 max-w-3xl mx-auto">
-                <p className="text-xs text-slate-400 mb-3 uppercase tracking-widest font-bold">
-                  Try asking for
-                </p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {sampleQueries.map((q, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setQuery(q)}
-                      className="text-sm bg-white border border-slate-200 px-4 py-2 rounded-full text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 transition-all shadow-sm hover:shadow"
-                    >
-                      &ldquo;{q}&rdquo;
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+  </div>
+</section>
 
         {error && (
           <div className="max-w-3xl mx-auto px-4 mb-8">
@@ -549,7 +527,7 @@ export default function Home() {
             <div className="mt-16 bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {[
-                  { value: "15+", label: "Product SKUs" },
+                  { value: "50+", label: "Product SKUs" },
                   { value: "8", label: "Suppliers" },
                   { value: "6", label: "Categories" },
                   { value: "< 2s", label: "Match Speed" },

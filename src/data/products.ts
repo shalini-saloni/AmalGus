@@ -25,9 +25,6 @@ export interface Product {
 }
 
 export const products: Product[] = [
-  // ═══════════════════════════════════════════════
-  // TEMPERED GLASS (8 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p1",
     name: "Architectural Tempered Glass",
@@ -176,9 +173,6 @@ export const products: Product[] = [
     moq: "5 sqm",
   },
 
-  // ═══════════════════════════════════════════════
-  // LAMINATED GLASS (8 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p9",
     name: "Heavy-Duty Laminated Safety Glass",
@@ -325,9 +319,6 @@ export const products: Product[] = [
     moq: "8 sqm",
   },
 
-  // ═══════════════════════════════════════════════
-  // FLOAT GLASS (8 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p17",
     name: "Standard Clear Float Glass",
@@ -465,9 +456,6 @@ export const products: Product[] = [
     moq: "30 sqm",
   },
 
-  // ═══════════════════════════════════════════════
-  // INSULATED GLASS UNITS (6 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p25",
     name: "Energy-Saving IGU (5+12+5)",
@@ -572,9 +560,6 @@ export const products: Product[] = [
     moq: "5 sqm",
   },
 
-  // ═══════════════════════════════════════════════
-  // MIRRORS (5 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p31",
     name: "Toughened Mirror Glass",
@@ -662,9 +647,6 @@ export const products: Product[] = [
     moq: "10 sqm",
   },
 
-  // ═══════════════════════════════════════════════
-  // SPECIALTY GLASS (7 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p36",
     name: "Fire-Rated Glass (60 min)",
@@ -789,9 +771,6 @@ export const products: Product[] = [
     moq: "20 sqm",
   },
 
-  // ═══════════════════════════════════════════════
-  // HARDWARE (8 products)
-  // ═══════════════════════════════════════════════
   {
     id: "p43",
     name: "Stainless Steel Spider Fittings",
