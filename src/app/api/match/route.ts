@@ -13,10 +13,11 @@ const MODEL_PRIORITIES = [
   "gemini-2.5-flash",
 ];
 
-async function tryGeminiMatch(query: string): Promise<any[] | null> {
+async function tryGeminiMatch(query: string, role: string): Promise<any[] | null> {
   if (!genAI) return null;
 
   const prompt = `You are an intelligent matching engine for the AmalGus glass and allied products marketplace.
+The buyer's profile/role is: "${role}".
 We have the following catalog of products:
 ${JSON.stringify(products, null, 2)}
 
@@ -26,7 +27,7 @@ Analyze the requirement and the catalog. Find the top 4-5 best matching products
 For each match, provide:
 1. "id": The product ID
 2. "score": A match score between 0 and 100 (number). Score higher if specific dimensions, thickness, or use-cases match.
-3. "explanation": A short, clear explanation (1-2 sentences max) of why this product is a good fit, explicitly mentioning how it satisfies the user's constraints.
+3. "explanation": A short, clear explanation (1-2 sentences max) of why this product is a good fit. IMPORTANT: Tailor this explanation explicitly to their role (${role}). For an 'architect', highlight architectural specs/standards. For a 'homeowner', highlight safety/aesthetics. For a 'dealer', highlight wholesale utility/margins.
 
 Return exactly and only a valid JSON object matching this schema.
 {
@@ -64,22 +65,22 @@ Return exactly and only a valid JSON object matching this schema.
   return null; // all models failed
 }
 
-export async function POST(req: Request) {
-  try {
-    const { query } = await req.json();
-    if (!query || typeof query !== "string" || !query.trim()) {
-      return NextResponse.json({ error: "Query is required" }, { status: 400 });
-    }
-
-    // ── Try Gemini first ──
-    let matchSource = "ai";
-    let rawMatches = await tryGeminiMatch(query);
-
-    // ── Fallback to local engine ──
-    if (!rawMatches) {
-      matchSource = "local";
-      rawMatches = localMatch(query, 5);
-    }
+  export async function POST(req: Request) {
+    try {
+      const { query, role = "homeowner" } = await req.json();
+      if (!query || typeof query !== "string" || !query.trim()) {
+        return NextResponse.json({ error: "Query is required" }, { status: 400 });
+      }
+  
+      // ── Try Gemini first ──
+      let matchSource = "ai";
+      let rawMatches = await tryGeminiMatch(query, role);
+  
+      // ── Fallback to local engine ──
+      if (!rawMatches) {
+        matchSource = "local";
+        rawMatches = localMatch(query, role, 5);
+      }
 
     // Enrich matches with full product details
     const finalResults = (rawMatches || [])

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   Search,
@@ -14,11 +14,8 @@ import {
   Zap,
   Shield,
   TrendingUp,
-  ArrowRight,
-  Menu,
-  X,
-  Bot,
   Cpu,
+  Bot,
 } from "lucide-react";
 import { Product } from "@/data/products";
 import Link from "next/link";
@@ -101,13 +98,36 @@ function SkeletonCard() {
   );
 }
 
+const FEATURED_GLASSES = [
+  { name: "Tempered Glass", image: "/tempered_glass.png" },
+  { name: "Beveled Glass", image: "/beveled_glass.png" },
+  { name: "Crown Glass", image: "/crown_glass.png" },
+  { name: "Hebron Glass", image: "/hebron_glass.png" },
+];
+
+import { roles } from "@/components/RoleSelector";
+
 export default function Home() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<MatchedProduct[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [matchSource, setMatchSource] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showGate, setShowGate] = useState(false);
+
+  useEffect(() => {
+    const hasRole = localStorage.getItem("amalgus_role_set");
+    if (!hasRole) {
+      setShowGate(true);
+    }
+  }, []);
+
+  const handleRoleSelect = (roleId: string) => {
+    localStorage.setItem("amalgus_role", roleId);
+    localStorage.setItem("amalgus_role_set", "true");
+    setShowGate(false);
+    window.dispatchEvent(new Event("roleChange"));
+  };
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -119,10 +139,11 @@ export default function Home() {
     setMatchSource(null);
 
     try {
+      const role = localStorage.getItem("amalgus_role") || "homeowner";
       const res = await fetch("/api/match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, role }),
       });
 
       const data = await res.json();
@@ -133,6 +154,11 @@ export default function Home() {
 
       setResults(data.results || []);
       setMatchSource(data.source || "local");
+
+      // Scroll to results
+      setTimeout(() => {
+        document.getElementById("results-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "An unexpected error occurred.");
@@ -142,462 +168,295 @@ export default function Home() {
   };
 
   const sampleQueries = [
-    "6mm tempered glass for office cabin partitions, polished edges",
-    "Laminated safety glass for balcony railing, UV protected",
-    "Budget-friendly 4mm float glass for residential windows",
-    "Insulated glass units, 5+12+5 configuration, energy efficient",
+    "10mm tempered glass for office cabins",
+    "Laminated safety glass for balcony",
+    "Soundproof double glazed windows",
   ];
 
   return (
-    <div className="min-h-screen bg-[#f0f4f8] text-slate-900 selection:bg-blue-200">
-      {/* ═══════════════ HEADER ═══════════════ */}
-      <header className="sticky top-0 z-50 glass-card shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <Image
-              src="/amalgus_icon.webp"
-              alt="AmalGus Logo"
-              width={48}
-              height={48}
-              className="w-12 h-12 drop-shadow-md group-hover:drop-shadow-lg transition-all"
-            />
-            <span className="text-xl font-extrabold tracking-tight text-gradient bg-gradient-to-r from-slate-900 to-slate-600">
-              AmalGus
-            </span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            <Link
-              href="/"
-              className="px-4 py-2 rounded-lg text-sm font-semibold text-blue-600 bg-blue-50 transition-colors"
+    <div className="min-h-screen bg-[#E7F6F5] text-[#2A2F35] font-sans selection:bg-cyan-200">
+      {/* Profile Gate Overlay */}
+      {showGate && (
+        <div className="fixed inset-0 z-[100] bg-[#2A2F35]/95 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white max-w-md w-full rounded-2xl shadow-2xl p-8 animate-in zoom-in-95 duration-300">
+            <h2 className="text-2xl font-black text-cyan-700 mb-2 text-center">Welcome to AmalGus</h2>
+            <p className="text-slate-500 text-center mb-8">Please select your profile to continue customizing your experience.</p>
+            <div className="space-y-3">
+              {roles.filter(r => r.id !== "guest").map((role) => (
+                <button
+                  key={role.id}
+                  onClick={() => handleRoleSelect(role.id)}
+                  className="w-full text-left px-5 py-4 rounded-xl border border-slate-200 hover:border-cyan-500 hover:bg-cyan-50 hover:shadow-md transition-all group flex justify-between items-center"
+                >
+                  <span className="font-semibold text-slate-700 group-hover:text-cyan-700">{role.label}</span>
+                  <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-cyan-500 transition-transform group-hover:translate-x-1" />
+                </button>
+              ))}
+            </div>
+            <button 
+              onClick={() => handleRoleSelect("guest")}
+              className="w-full text-center mt-6 text-sm text-slate-400 hover:text-slate-600 underline underline-offset-4"
             >
-              Discovery
-            </Link>
-            <Link
-              href="/marketplace"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 transition-colors"
-            >
-              Marketplace
-            </Link>
-            <Link
-              href="/suppliers"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50/50 transition-colors"
-            >
-              Suppliers
-            </Link>
-          </nav>
-
-          {/* Mobile menu toggle */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Nav Dropdown */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 px-4 py-3 space-y-1 bg-white/95 backdrop-blur">
-            <Link href="/" className="block px-4 py-2.5 rounded-lg text-sm font-semibold text-blue-600 bg-blue-50">
-              Discovery
-            </Link>
-            <Link href="/marketplace" className="block px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
-              Marketplace
-            </Link>
-            <Link href="/suppliers" className="block px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
-              Suppliers
-            </Link>
+              Continue as Guest
+            </button>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
       <main>
-        <section className="relative overflow-hidden pt-16 pb-8 md:pt-24 md:pb-12">
-          {/* Background Video */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover -z-10"
-          >
-            <source src="/amalgus_background.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-black/40 -z-10" />
-          
-          {/* Decorative blobs */}
-          <div className="absolute top-10 left-[10%] w-72 h-72 rounded-full bg-blue-400/10 blur-3xl float-slow pointer-events-none" />
-          <div className="absolute top-40 right-[5%] w-96 h-96 rounded-full bg-cyan-400/10 blur-3xl float-medium pointer-events-none" />
-          <div className="absolute -bottom-20 left-1/2 w-80 h-80 rounded-full bg-indigo-400/10 blur-3xl float-fast pointer-events-none" />
+        {/* ═══ Template Hero Section ═══ */}
+        <section className="relative w-full overflow-hidden flex flex-col md:flex-row bg-white">
+          {/* Left part structure */}
+          <div className="w-full md:w-[45%] relative flex items-center justify-end z-10 bg-white">
+            {/* The structural dark block as seen in the template */}
+            <div className="absolute right-0 w-32 md:w-48 h-full bg-[#2A2F35]"></div>
+            
+            {/* Hero Banner Box */}
+            <div className="relative w-full max-w-xl bg-[#D0EAE9] py-16 px-8 md:px-16 shadow-sm z-20 md:-mr-12 my-12 md:my-32">
+              <h1 className="text-4xl md:text-5xl font-light text-[#2A2F35] leading-snug tracking-wide mb-8">
+                Glasses That Reflect<br />Your Elegance
+              </h1>
+              
+              <Link
+                href="/marketplace"
+                className="inline-block bg-[#5A878B] hover:bg-[#4a7275] text-white px-8 py-3.5 rounded-full tracking-wider text-sm transition-colors"
+              >
+                Enquire Now
+              </Link>
 
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 border border-blue-200/60 text-sm font-semibold mb-6 shadow-sm">
-              <Sparkles className="w-4 h-4" />
-              AI-Powered Smart Product Discovery
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6">
-              Find the perfect glass.
-              <br />
-              <span className="text-gradient bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600">
-                In plain English.
-              </span>
-            </h1>
-
-            <p className="text-slate-500 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed mb-10">
-              Describe what you&apos;re building and our intelligent matching
-              engine will instantly find the exact products, specs, and suppliers
-              you need from our glass marketplace.
-            </p>
-
-            {/* ═══ Search Bar ═══ */}
-            <div className="max-w-3xl mx-auto relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 rounded-2xl blur-lg search-glow opacity-20 group-hover:opacity-35 transition-opacity duration-500 pointer-events-none" />
-              <div className="relative bg-white rounded-xl shadow-xl ring-1 ring-slate-200/60 hover:shadow-2xl transition-shadow duration-300">
-                <form
-                  onSubmit={handleSearch}
-                  className="flex items-center p-2"
-                >
-                  <Search className="w-5 h-5 text-slate-400 ml-4 hidden sm:block flex-shrink-0" />
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder='e.g. "10mm laminated safety glass for balcony railings with UV protection"'
-                    className="flex-1 bg-transparent px-4 py-4 sm:py-5 text-slate-800 focus:outline-none text-base sm:text-lg placeholder-slate-400 min-w-0"
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    disabled={isSearching || !query.trim()}
-                    className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:from-slate-300 disabled:to-slate-300 disabled:cursor-not-allowed text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-semibold transition-all flex items-center gap-2 whitespace-nowrap active:scale-[0.97] shadow-lg shadow-blue-500/25 disabled:shadow-none"
-                  >
-                    {isSearching ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          />
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          />
-                        </svg>
-                        Matching…
-                      </>
-                    ) : (
-                      <>
-                        Find Matches
-                        <Sparkles className="w-4 h-4 hidden sm:block" />
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            {/* Sample queries */}
-            {!results.length && !isSearching && (
-              <div className="mt-8 max-w-3xl mx-auto">
-                <p className="text-xs text-slate-400 mb-3 uppercase tracking-widest font-bold">
-                  Try asking for
+              <div className="mt-12 w-full">
+                <p className="text-sm font-bold text-[#2A2F35] mb-3 flex flex-wrap gap-2 items-center">
+                  <Sparkles className="w-4 h-4 text-[#5A878B]" /> 
+                  AI Smart Matcher
                 </p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {sampleQueries.map((q, i) => (
+                <form onSubmit={handleSearch} className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-[#D0EAE9] to-[#5A878B] rounded-lg blur opacity-40 group-hover:opacity-75 transition duration-500"></div>
+                  <div className="relative flex items-center bg-white rounded shadow-sm overflow-hidden border border-white/50">
+                    <input
+                      type="text"
+                      className="w-full bg-transparent px-4 py-3 text-sm focus:outline-none text-[#2A2F35]"
+                      placeholder="e.g. 10mm tempered glass for office"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                    />
                     <button
-                      key={i}
-                      onClick={() => setQuery(q)}
-                      className="text-sm bg-white border border-slate-200 px-4 py-2 rounded-full text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 transition-all shadow-sm hover:shadow"
+                      type="submit"
+                      disabled={isSearching || !query.trim()}
+                      className="bg-[#5A878B] hover:bg-[#4A7275] disabled:bg-slate-300 text-white p-3 h-full transition-colors flex items-center justify-center shrink-0"
                     >
-                      &ldquo;{q}&rdquo;
+                      {isSearching ? <Cpu className="w-5 h-5 animate-pulse" /> : <Search className="w-5 h-5" />}
                     </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {error && (
-          <div className="max-w-3xl mx-auto px-4 mb-8">
-            <div className="p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 shadow-sm">
-              <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-red-800">
-                  Something went wrong
-                </h3>
-                <p className="text-red-600 text-sm mt-1">{error}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {isSearching && (
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6 pb-16">
-            <div className="flex items-center gap-3 border-b border-slate-200 pb-4">
-              <Cpu className="w-5 h-5 text-blue-500 animate-pulse" />
-              <span className="text-sm font-semibold text-slate-600">
-                Analyzing your requirements and matching against our catalog…
-              </span>
-            </div>
-            {[1, 2, 3].map((i) => (
-              <SkeletonCard key={i} />
-            ))}
-          </div>
-        )}
-
-        {results.length > 0 && !isSearching && (
-          <section className="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
-            {/* Results header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-4 mb-8 gap-3">
-              <h2 className="text-2xl font-extrabold flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-blue-500" />
-                Top Matches
-              </h2>
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-slate-500 font-medium">
-                  {results.length} products found
-                </span>
-                {matchSource && (
-                  <span
-                    className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${
-                      matchSource === "ai"
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                        : "bg-amber-50 text-amber-700 border border-amber-200"
-                    }`}
-                  >
-                    {matchSource === "ai" ? (
-                      <Bot className="w-3 h-3" />
-                    ) : (
-                      <Cpu className="w-3 h-3" />
-                    )}
-                    {matchSource === "ai" ? "Gemini AI" : "Smart Engine"}
-                  </span>
+                  </div>
+                </form>
+                
+                {/* Sample queries */}
+                {!results.length && !isSearching && (
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {sampleQueries.map((q, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setQuery(q)}
+                        className="text-[11px] bg-white/60 px-3 py-1.5 rounded-full text-[#5A878B] hover:bg-white transition-colors border border-white/40"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Product Cards */}
-            <div className="grid gap-6">
-              {results.map((product, idx) => (
-                <div
-                  key={product.id}
-                  className={`card-enter bg-white rounded-2xl border overflow-hidden transition-all duration-300 hover:shadow-lg ${
-                    idx === 0
-                      ? "border-blue-200 shadow-md shadow-blue-100/40 relative ring-1 ring-blue-100"
-                      : "border-slate-200 shadow-sm hover:border-blue-100"
-                  }`}
-                  style={{ animationDelay: `${idx * 100}ms` }}
-                >
-                  {/* Best Match ribbon */}
-                  {idx === 0 && (
-                    <div className="absolute top-0 right-0">
-                      <div className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[11px] font-bold px-4 py-1.5 rounded-bl-xl shadow-lg shadow-blue-500/20 tracking-wide">
-                        BEST MATCH
+          {/* Right part structure (Image) */}
+          <div className="w-full md:w-[55%] h-[400px] md:h-auto relative bg-slate-100">
+            <Image
+              src="/hero_office_glass.png"
+              alt="Office Glass Partition"
+              fill
+              className="object-cover object-center"
+              priority
+            />
+          </div>
+        </section>
+
+        {/* ═══ AI Search Results Section (Moved up here) ═══ */}
+        <div id="results-section">
+          {(isSearching || results.length > 0 || error) && (
+            <section className="bg-white py-12 border-b border-slate-100 shadow-sm relative z-20">
+              <div className="max-w-5xl mx-auto px-4 sm:px-6">
+                
+                {error && (
+                  <div className="p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3 shadow-sm mb-8">
+                    <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-red-800">Cannot complete match</h3>
+                      <p className="text-red-600 text-sm mt-1">{error}</p>
+                    </div>
+                  </div>
+                )}
+
+                {isSearching && (
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                      <Cpu className="w-5 h-5 text-[#5A878B] animate-pulse" />
+                      <span className="text-sm font-semibold text-slate-600">
+                        Analyzing your requirements...
+                      </span>
+                    </div>
+                    {[1, 2].map((i) => <SkeletonCard key={i} />)}
+                  </div>
+                )}
+
+                {results.length > 0 && !isSearching && (
+                  <div>
+                    <div className="flex flex-wrap items-center justify-between border-b border-slate-200 pb-4 mb-8 gap-4">
+                      <h2 className="text-2xl font-light text-[#2A2F35] flex items-center gap-2">
+                        <Sparkles className="w-6 h-6 text-[#5A878B]" />
+                        Matching Products
+                      </h2>
+                      <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
+                        <span className="text-sm text-slate-500 font-medium">
+                          {results.length} found via
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#5A878B]">
+                          {matchSource === "ai" ? <Bot className="w-4 h-4" /> : <Cpu className="w-4 h-4" />}
+                          {matchSource === "ai" ? "Gemini AI" : "Smart Engine"}
+                        </span>
                       </div>
                     </div>
-                  )}
 
-                  <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8">
-                    {/* Left content */}
-                    <div className="flex-1 space-y-4 min-w-0">
-                      <div>
-                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 leading-tight pr-24 md:pr-0">
-                          {product.name}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-2 mt-3">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 text-sm font-semibold border border-blue-100">
-                            <Layers className="w-3.5 h-3.5" />
-                            {product.category}
-                          </span>
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-50 text-slate-600 text-sm font-medium border border-slate-100">
-                            <Package className="w-3.5 h-3.5" />
-                            {product.supplier}
-                          </span>
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-sm font-bold border border-emerald-100">
-                            <Tag className="w-3.5 h-3.5" />
-                            {product.price}
-                          </span>
-                        </div>
-                      </div>
+                    <div className="grid gap-6">
+                      {results.map((product, idx) => (
+                        <div
+                          key={product.id}
+                          className={`card-enter bg-white rounded-xl border p-6 lg:p-8 flex flex-col md:flex-row gap-6 lg:gap-8 transition-all duration-300 hover:shadow-lg ${
+                            idx === 0
+                              ? "border-[#5A878B] shadow-md shadow-[#5A878B]/10 ring-1 ring-[#5A878B]/20 relative"
+                              : "border-slate-200 hover:border-[#5A878B]/50"
+                          }`}
+                          style={{ animationDelay: `${idx * 100}ms` }}
+                        >
+                          {idx === 0 && (
+                            <div className="absolute top-0 right-4 bg-[#5A878B] text-white text-[10px] font-black px-4 py-1.5 rounded-b shadow-sm tracking-widest uppercase">
+                              Best Match
+                            </div>
+                          )}
 
-                      <p className="text-slate-600 leading-relaxed text-[15px]">
-                        {product.description}
-                      </p>
-
-                      {/* Why it matches */}
-                      <div className="bg-gradient-to-br from-blue-50/80 to-cyan-50/50 rounded-xl p-4 border border-blue-100/60">
-                        <div className="flex items-start gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <h4 className="text-sm font-bold text-slate-800 mb-1">
-                              Why this matches your needs:
-                            </h4>
-                            <p className="text-sm text-slate-700 leading-relaxed">
-                              {product.matchExplanation}
+                          <div className="flex-1 space-y-4">
+                            <div>
+                              <h3 className="text-xl md:text-2xl font-bold text-[#2A2F35] pr-20 md:pr-0">
+                                {product.name}
+                              </h3>
+                              <div className="flex flex-wrap gap-2 mt-3 text-xs md:text-sm">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-[#E7F6F5] text-[#396265] font-semibold">
+                                  <Layers className="w-3.5 h-3.5" /> {product.category}
+                                </span>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-100 text-slate-700 font-medium">
+                                  <Package className="w-3.5 h-3.5" /> {product.supplier}
+                                </span>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 font-bold">
+                                  <Tag className="w-3.5 h-3.5" /> {product.price}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <p className="text-slate-600 text-[15px] leading-relaxed">
+                              {product.description}
                             </p>
+
+                            <div className="bg-[#f8fafc] rounded-lg p-4 object-contain">
+                              <div className="flex items-start gap-3">
+                                <CheckCircle2 className="w-5 h-5 text-[#5A878B] mt-0.5 shrink-0" />
+                                <div>
+                                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">Why this fits</h4>
+                                  <p className="text-sm text-slate-700">{product.matchExplanation}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-row md:flex-col items-center justify-between md:justify-center gap-4 border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-8 md:w-48 shrink-0">
+                            <ScoreRing score={product.matchScore} />
+                            <Link href={`/marketplace`} className="w-full bg-[#2A2F35] hover:bg-black text-white text-sm font-semibold py-2.5 px-4 rounded transition-colors flex items-center justify-center gap-2">
+                              View Product <ChevronRight className="w-4 h-4" />
+                            </Link>
                           </div>
                         </div>
-                      </div>
-
-                      {/* Specs pills */}
-                      <div className="flex flex-wrap gap-2">
-                        {Object.entries(product.specifications)
-                          .slice(0, 5)
-                          .map(([key, value]) => (
-                            <span
-                              key={key}
-                              className="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg font-medium border border-slate-200/60"
-                            >
-                              <span className="text-slate-400 capitalize">
-                                {key.replace(/([A-Z])/g, " $1").trim()}:
-                              </span>{" "}
-                              <span className="text-slate-800 font-semibold">
-                                {value}
-                              </span>
-                            </span>
-                          ))}
-                      </div>
-                    </div>
-
-                    {/* Right — Score */}
-                    <div className="flex flex-row md:flex-col items-center md:items-center gap-4 md:gap-5 md:w-36">
-                      <ScoreRing score={product.matchScore} />
-                      <button className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 text-sm active:scale-[0.97]">
-                        Contact
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
+                      ))}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                )}
 
-        {!results.length && !isSearching && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">
-                How It Works
-              </h2>
-              <p className="text-slate-500 max-w-lg mx-auto">
-                Our intelligent engine understands your needs and finds the best
-                products from verified suppliers.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: <Search className="w-6 h-6" />,
-                  title: "Describe Your Need",
-                  desc: "Type your requirement in plain English — dimensions, thickness, use-case, budget — anything.",
-                  color: "from-blue-500 to-cyan-400",
-                },
-                {
-                  icon: <Zap className="w-6 h-6" />,
-                  title: "AI Matches Instantly",
-                  desc: "Our engine analyzes specs, certifications, and context to rank the best-fitting products.",
-                  color: "from-violet-500 to-purple-400",
-                },
-                {
-                  icon: <Shield className="w-6 h-6" />,
-                  title: "Connect & Order",
-                  desc: "View detailed specs, compare suppliers, and connect directly with verified manufacturers.",
-                  color: "from-emerald-500 to-teal-400",
-                },
-              ].map((feature, i) => (
-                <div
-                  key={i}
-                  className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-300 group"
-                >
-                  <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-white shadow-lg mb-5 group-hover:scale-110 transition-transform`}
-                  >
-                    {feature.icon}
+              </div>
+            </section>
+          )}
+        </div>
+
+        {/* ═══ Template Glasses Grid Section ═══ */}
+        <section className="bg-[#E7F6F5] py-20 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-3xl text-center text-[#2A2F35] font-light mb-16 tracking-wide">
+              Glasses
+            </h2>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16 lg:px-12">
+              {FEATURED_GLASSES.map((item, idx) => (
+                <div key={idx} className="relative group cursor-pointer">
+                  {/* The dark shadow box offset */}
+                  <div className="absolute top-4 -right-4 bottom-8 left-4 bg-[#394047] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></div>
+                  
+                  {/* Image container */}
+                  <div className="relative bg-white aspect-square shadow-sm flex items-center justify-center overflow-hidden border border-slate-100">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover p-2 md:p-4 hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">
-                    {feature.desc}
+                  
+                  {/* Label */}
+                  <p className="mt-8 text-center text-[#2A2F35] font-medium tracking-wide">
+                    {item.name}
                   </p>
                 </div>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* Stats bar */}
-            <div className="mt-16 bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {[
-                  { value: "15+", label: "Product SKUs" },
-                  { value: "8", label: "Suppliers" },
-                  { value: "6", label: "Categories" },
-                  { value: "< 2s", label: "Match Speed" },
-                ].map((stat, i) => (
-                  <div key={i} className="text-center">
-                    <div className="text-3xl md:text-4xl font-black text-gradient bg-gradient-to-r from-blue-600 to-cyan-500">
-                      {stat.value}
+        {/* ═══ How It Works / Allied Specs (Brief) ═══ */}
+        <section className="bg-white py-16 border-t border-slate-100">
+           <div className="max-w-7xl mx-auto px-4 sm:px-6">
+              <div className="grid md:grid-cols-3 gap-8">
+                 {[
+                   { i: <Search />, t: "Search in Plain English", d: "Describe your project. AI matches you with the right glass naturally." },
+                   { i: <Zap />, t: "Compare Instantly", d: "See multiple vendors, real-time rates, and allied product requirements." },
+                   { i: <Shield />, t: "Verified Ecosystem", d: "Connect securely with fabricators, installers, and brand distributors." }
+                 ].map((blk, idx) => (
+                    <div key={idx} className="p-8 border border-slate-100 rounded-xl hover:shadow-lg transition-shadow">
+                       <div className="w-12 h-12 bg-[#E7F6F5] text-[#5A878B] flex items-center justify-center rounded-lg mb-6">
+                          {blk.i}
+                       </div>
+                       <h3 className="text-lg font-bold text-[#2A2F35] mb-2">{blk.t}</h3>
+                       <p className="text-slate-500">{blk.d}</p>
                     </div>
-                    <div className="text-sm text-slate-500 font-medium mt-1">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
+                 ))}
               </div>
-            </div>
-          </section>
-        )}
+           </div>
+        </section>
       </main>
 
-      {/* ═══════════════ FOOTER ═══════════════ */}
-      <footer className="bg-white border-t border-slate-200 py-8 mt-8">
+      <footer className="bg-[#2A2F35] text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">
-              A
-            </div>
-            <span className="text-sm font-bold text-slate-700">AmalGus</span>
-            <span className="text-sm text-slate-400 ml-1">
-              &copy; {new Date().getFullYear()} Glass Marketplace
-            </span>
+          <div className="flex flex-col">
+            <span className="text-2xl font-black tracking-tight text-white">AmalGus</span>
+            <span className="text-xs text-slate-400 mt-1 uppercase tracking-widest">Global Glass Marketplace</span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-slate-500">
-            <Link
-              href="/marketplace"
-              className="hover:text-blue-600 transition-colors"
-            >
-              Marketplace
-            </Link>
-            <Link
-              href="/suppliers"
-              className="hover:text-blue-600 transition-colors"
-            >
-              Suppliers
-            </Link>
-            <span className="text-slate-300">|</span>
-            <span className="text-slate-400 flex items-center gap-1">
-              Powered by <TrendingUp className="w-3.5 h-3.5" /> AI
-            </span>
+          <div className="flex items-center gap-6 text-sm text-slate-400 font-medium">
+            <Link href="/marketplace" className="hover:text-white transition-colors">Marketplace</Link>
+            <Link href="/estimate" className="hover:text-white transition-colors">Quotes</Link>
+            <Link href="/suppliers" className="hover:text-white transition-colors">Suppliers</Link>
           </div>
         </div>
       </footer>
