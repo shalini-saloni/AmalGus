@@ -210,7 +210,7 @@ export interface LocalMatchResult {
   explanation: string;
 }
 
-export function localMatch(query: string, topN = 5): LocalMatchResult[] {
+export function localMatch(query: string, role: string = "homeowner", topN = 5): LocalMatchResult[] {
   const scored = products
     .map((p) => scoreProduct(query, p))
     .sort((a, b) => b.score - a.score)
@@ -220,15 +220,23 @@ export function localMatch(query: string, topN = 5): LocalMatchResult[] {
   const maxScore = scored[0]?.score ?? 0;
   const boostFactor = maxScore < 30 ? 2.5 : maxScore < 50 ? 1.5 : 1;
 
+  let roleContext = "Perfect for your residential project.";
+  if (role === "architect") {
+    roleContext = "Meets rigorous architectural specifications and structural standards.";
+  } else if (role === "builder" || role === "dealer") {
+    roleContext = "Excellent margins and reliable supply for bulk trade requirements.";
+  }
+
   return scored.map(({ product, score, reasons }) => {
     const boosted = Math.min(98, Math.round(score * boostFactor));
+    const baseExplanation = reasons.length > 0
+          ? reasons.slice(0, 3).join(". ") + "."
+          : "General relevance to your query based on product characteristics.";
+
     return {
       id: product.id,
       score: boosted,
-      explanation:
-        reasons.length > 0
-          ? reasons.slice(0, 3).join(". ") + "."
-          : "General relevance to your query based on product characteristics.",
+      explanation: `${baseExplanation} ${roleContext}`,
     };
   });
 }
