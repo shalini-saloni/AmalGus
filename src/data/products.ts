@@ -25,6 +25,88 @@ export interface Product {
 }
 
 export const products: Product[] = [
+
+  {
+    id: "sp1",
+    name: "Clear Float Glass",
+    category: "Float Glass",
+    specifications: { thickness: "5mm", process: "Plain", application: "Windows" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹45 - ₹60 /sq.ft",
+    description: "Standard clear float glass used primarily for windows and simple structural glazing."
+  },
+  {
+    id: "sp2",
+    name: "Toughened Glass",
+    category: "Tempered Glass",
+    specifications: { thickness: "8mm", process: "Tempered", application: "Shower Enclosure" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹120 - ₹160 /sq.ft",
+    description: "Highly durable toughened glass designed for shower enclosures and high-impact areas."
+  },
+  {
+    id: "sp3",
+    name: "Laminated Safety Glass",
+    category: "Laminated Glass",
+    specifications: { thickness: "10mm", process: "PVB Laminated", application: "Railing / Safety" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹180 - ₹250 /sq.ft",
+    description: "PVB Laminated safety glass perfect for railings, balconies, and overhead safety enclosures."
+  },
+  {
+    id: "sp4",
+    name: "DGU / IGU Insulated Glass",
+    category: "Insulated Glass",
+    specifications: { thickness: "6+12+6mm", process: "Insulated", application: "Facade / Curtain Wall" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹350 - ₹500 /sq.ft",
+    description: "Double Glazed Units built for supreme insulation on building facades and curtain walls."
+  },
+  {
+    id: "sp5",
+    name: "Frosted Glass",
+    category: "Decorative Glass",
+    specifications: { thickness: "6mm", process: "Acid Etched", application: "Partition / Privacy" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹85 - ₹110 /sq.ft",
+    description: "Acid etched frosted glass offering light transmission with full privacy. Ideal for partitions."
+  },
+  {
+    id: "sp6",
+    name: "Reflective Glass",
+    category: "Float Glass",
+    specifications: { thickness: "6mm", process: "Coated", application: "Exterior Facade" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹100 - ₹140 /sq.ft",
+    description: "Solar control reflective glass to reduce heat and glare on exterior building facades."
+  },
+  {
+    id: "sp7",
+    name: "Low-E Glass",
+    category: "Float Glass",
+    specifications: { thickness: "6mm", process: "Soft Coat", application: "Energy Efficient" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹200 - ₹300 /sq.ft",
+    description: "High-performance Low-E soft coated glass engineered for extreme energy efficiency."
+  },
+  {
+    id: "sp8",
+    name: "Back-Painted Glass",
+    category: "Decorative Glass",
+    specifications: { thickness: "8mm", process: "Lacquered", application: "Kitchen / Decorative" },
+    supplier: "AmalGus Vendors", supplierEmail: "sales@amalgus.com", supplierPhone: "+91 91234 56789",
+    price: "₹150 - ₹220 /sq.ft",
+    description: "Lacquered back-painted glass adding a stylish decorative touch to kitchen splashbacks and walls."
+  },
+  {
+    id: "sp9",
+    name: "Standard Aluminum Frame Profile",
+    category: "Frames",
+    specifications: { thickness: "2mm", process: "Anodized", application: "Windows / Partitions" },
+    supplier: "BuildCorp Materials", supplierEmail: "sales@buildcorp.in", supplierPhone: "+91 88888 77777",
+    price: "₹85 - ₹120 /ft",
+    description: "Heavy-duty extruded aluminum frame profiles designed specifically to support 5mm to 12mm glass partitions."
+  },
   {
     id: "p1",
     name: "Architectural Tempered Glass",
@@ -39,7 +121,7 @@ export const products: Product[] = [
     supplier: "Guardian Glass Tech",
     supplierEmail: "sales@guardianglass.com",
     supplierPhone: "+91 98765 43210",
-    price: "$45 per sqm",
+    price: "₹45 /sq.ft",
     description:
       "High-strength clear tempered glass, ideal for office cabin partitions and frameless doors.",
     moq: "20 sqm",
@@ -57,7 +139,7 @@ export const products: Product[] = [
     supplier: "PrivacyGlaze",
     supplierEmail: "orders@privacyglaze.in",
     supplierPhone: "+91 87654 32109",
-    price: "$55 per sqm",
+    price: "₹55 /sq.ft",
     description:
       "Acid-etched frosted tempered glass providing privacy while allowing light transmission. Ideal for shower enclosures and internal partitions.",
     moq: "10 sqm",
@@ -76,7 +158,7 @@ export const products: Product[] = [
     supplier: "StrongBuild Glass",
     supplierEmail: "info@strongbuild.com",
     supplierPhone: "+91 99887 66554",
-    price: "$68 per sqm",
+    price: "₹68 /sq.ft",
     description:
       "Heavy-duty 10mm tempered glass panels for frameless shower enclosures, glass railings, and structural glazing.",
     moq: "15 sqm",
@@ -95,7 +177,7 @@ export const products: Product[] = [
     supplier: "Guardian Glass Tech",
     supplierEmail: "sales@guardianglass.com",
     supplierPhone: "+91 98765 43210",
-    price: "$85 per sqm",
+    price: "₹85 /sq.ft",
     description:
       "Premium extra-thick tempered glass for heavy-duty applications — glass canopies, floors, and structural partitions.",
     moq: "10 sqm",
@@ -113,7 +195,7 @@ export const products: Product[] = [
     supplier: "HomeLux Glass",
     supplierEmail: "hello@homelux.in",
     supplierPhone: "+91 91234 56780",
-    price: "$52 per sqm",
+    price: "₹52 /sq.ft",
     description:
       "Custom-cut tempered glass table tops for dining, office, and coffee tables. Available in round, rectangular, and custom shapes.",
     moq: "5 units",
@@ -131,7 +213,7 @@ export const products: Product[] = [
     supplier: "ColorGlass India",
     supplierEmail: "info@colorglass.co.in",
     supplierPhone: "+91 88990 11223",
-    price: "$58 per sqm",
+    price: "₹58 /sq.ft",
     description:
       "Vibrant ocean blue tinted tempered glass for decorative partitions, splash backs, and façade cladding.",
     moq: "15 sqm",
@@ -149,7 +231,7 @@ export const products: Product[] = [
     supplier: "SafetyFirst Glass",
     supplierEmail: "contact@safetyfirst.in",
     supplierPhone: "+91 77665 54433",
-    price: "$78 per sqm",
+    price: "₹78 /sq.ft",
     description:
       "Heat-soak tested tempered glass that virtually eliminates spontaneous breakage risk. Essential for overhead glazing and high-rise facades.",
     moq: "20 sqm",
@@ -167,7 +249,7 @@ export const products: Product[] = [
     supplier: "StrongBuild Glass",
     supplierEmail: "info@strongbuild.com",
     supplierPhone: "+91 99887 66554",
-    price: "$120 per sqm",
+    price: "₹120 /sq.ft",
     description:
       "Ultra-thick tempered glass with anti-slip ceramic dot pattern for glass floors, walkways, and mezzanines.",
     moq: "5 sqm",
@@ -187,7 +269,7 @@ export const products: Product[] = [
     supplier: "SafeBuild Glass",
     supplierEmail: "sales@safebuild.in",
     supplierPhone: "+91 98123 45670",
-    price: "$75 per sqm",
+    price: "₹75 /sq.ft",
     description:
       "Tough laminated safety glass offering high wind resistance and fall protection. Perfect for balcony railings and skylights.",
     moq: "15 sqm",
@@ -205,7 +287,7 @@ export const products: Product[] = [
     supplier: "SoundProof Glass Industries",
     supplierEmail: "hello@soundproofglass.com",
     supplierPhone: "+91 85432 10987",
-    price: "$95 per sqm",
+    price: "₹95 /sq.ft",
     description:
       "Laminated glass featuring a specialized acoustic interlayer for maximum noise reduction in busy urban areas or studios.",
     moq: "10 sqm",
@@ -223,7 +305,7 @@ export const products: Product[] = [
     supplier: "SafeBuild Glass",
     supplierEmail: "sales@safebuild.in",
     supplierPhone: "+91 98123 45670",
-    price: "$115 per sqm",
+    price: "₹115 /sq.ft",
     description:
       "Ultra-strong laminated glass using SentryGlas Plus (SGP) interlayer — 5x stronger than PVB. Ideal for hurricane zones, glass floors, and structural applications.",
     moq: "10 sqm",
@@ -241,7 +323,7 @@ export const products: Product[] = [
     supplier: "ColorGlass India",
     supplierEmail: "info@colorglass.co.in",
     supplierPhone: "+91 88990 11223",
-    price: "$70 per sqm",
+    price: "₹70 /sq.ft",
     description:
       "Decorative bronze-tinted laminated glass that reduces solar heat gain while adding warmth. Popular for lobbies and atriums.",
     moq: "15 sqm",
@@ -259,7 +341,7 @@ export const products: Product[] = [
     supplier: "ArmorGlass Defense",
     supplierEmail: "sales@armorglass.com",
     supplierPhone: "+91 70001 23456",
-    price: "$450 per sqm",
+    price: "₹450 /sq.ft",
     description:
       "Multi-layered ballistic-rated laminated glass for banks, VIP vehicles, government buildings, and high-security installations.",
     moq: "5 sqm",
@@ -277,7 +359,7 @@ export const products: Product[] = [
     supplier: "HomeLux Glass",
     supplierEmail: "hello@homelux.in",
     supplierPhone: "+91 91234 56780",
-    price: "$82 per sqm",
+    price: "₹82 /sq.ft",
     description:
       "Safety laminated panels designed specifically for skylight applications. If broken, fragments remain bonded to the interlayer, preventing injury from falling glass.",
     moq: "10 sqm",
@@ -295,7 +377,7 @@ export const products: Product[] = [
     supplier: "SmartGlaze Technologies",
     supplierEmail: "info@smartglaze.in",
     supplierPhone: "+91 99001 22334",
-    price: "$280 per sqm",
+    price: "₹280 /sq.ft",
     description:
       "Electronically switchable privacy glass that turns from opaque to transparent at the flick of a switch. Perfect for conference rooms, hospitals, and luxury interiors.",
     moq: "5 sqm",
@@ -313,7 +395,7 @@ export const products: Product[] = [
     supplier: "ArtGlass Studio",
     supplierEmail: "studio@artglass.co.in",
     supplierPhone: "+91 82345 67890",
-    price: "$130 per sqm",
+    price: "₹130 /sq.ft",
     description:
       "Artistic laminated glass with real fabric, mesh, or decorative film sealed between glass layers. Stunning for feature walls, elevator cabs, and retail displays.",
     moq: "8 sqm",
@@ -331,7 +413,7 @@ export const products: Product[] = [
     supplier: "Crystal Clear Suppliers",
     supplierEmail: "bulk@crystalclear.in",
     supplierPhone: "+91 96543 21098",
-    price: "$18 per sqm",
+    price: "₹18 /sq.ft",
     description:
       "Budget-friendly 4mm float glass for standard residential windows. Available in large quantities at wholesale pricing.",
     moq: "100 sqm",
@@ -348,7 +430,7 @@ export const products: Product[] = [
     supplier: "Architectural Tints",
     supplierEmail: "orders@archtints.com",
     supplierPhone: "+91 94567 89012",
-    price: "$28 per sqm",
+    price: "₹28 /sq.ft",
     description:
       "Tinted 6mm glass for reducing solar glare and adding aesthetic appeal to building facades.",
     moq: "50 sqm",
@@ -365,7 +447,7 @@ export const products: Product[] = [
     supplier: "Premium Glass Co.",
     supplierEmail: "info@premiumglass.co",
     supplierPhone: "+91 93456 78901",
-    price: "$60 per sqm",
+    price: "₹60 /sq.ft",
     description:
       "High clarity low-iron glass, ideal for premium display cases, aquariums, and high-end interiors where maximum transparency is essential.",
     moq: "20 sqm",
@@ -382,7 +464,7 @@ export const products: Product[] = [
     supplier: "SolarShield Glass",
     supplierEmail: "sales@solarshield.in",
     supplierPhone: "+91 92345 67890",
-    price: "$35 per sqm",
+    price: "₹35 /sq.ft",
     description:
       "Reflective glass that blocks out significant amounts of heat and glare, popular for commercial skyscrapers and office buildings.",
     moq: "50 sqm",
@@ -399,7 +481,7 @@ export const products: Product[] = [
     supplier: "Crystal Clear Suppliers",
     supplierEmail: "bulk@crystalclear.in",
     supplierPhone: "+91 96543 21098",
-    price: "$22 per sqm",
+    price: "₹22 /sq.ft",
     description:
       "Green-tinted float glass that provides moderate solar control while giving a natural aesthetic. Popular for residential and commercial windows.",
     moq: "75 sqm",
@@ -416,7 +498,7 @@ export const products: Product[] = [
     supplier: "Crystal Clear Suppliers",
     supplierEmail: "bulk@crystalclear.in",
     supplierPhone: "+91 96543 21098",
-    price: "$20 per sqm",
+    price: "₹20 /sq.ft",
     description:
       "Versatile 5mm clear float glass for windows, picture frames, table tops, and general glazing. Available in standard sheet sizes.",
     moq: "50 sqm",
@@ -433,7 +515,7 @@ export const products: Product[] = [
     supplier: "Premium Glass Co.",
     supplierEmail: "info@premiumglass.co",
     supplierPhone: "+91 93456 78901",
-    price: "$42 per sqm",
+    price: "₹42 /sq.ft",
     description:
       "Heavy 10mm float glass suitable for furniture, shelving, and applications requiring thicker non-tempered glass.",
     moq: "20 sqm",
@@ -450,7 +532,7 @@ export const products: Product[] = [
     supplier: "Architectural Tints",
     supplierEmail: "orders@archtints.com",
     supplierPhone: "+91 94567 89012",
-    price: "$25 per sqm",
+    price: "₹25 /sq.ft",
     description:
       "Textured patterned glass that provides privacy while allowing natural light. Multiple patterns available for bathroom windows, doors, and partitions.",
     moq: "30 sqm",
@@ -469,7 +551,7 @@ export const products: Product[] = [
     supplier: "EcoGlaze Solutions",
     supplierEmail: "green@ecoglaze.com",
     supplierPhone: "+91 91010 20203",
-    price: "$110 per sqm",
+    price: "₹110 /sq.ft",
     description:
       "High performance dual-pane insulated glass units (5+12+5 config) designed for maximum energy efficiency in residential and commercial windows.",
     moq: "15 sqm",
@@ -486,7 +568,7 @@ export const products: Product[] = [
     supplier: "EcoGlaze Solutions",
     supplierEmail: "green@ecoglaze.com",
     supplierPhone: "+91 91010 20203",
-    price: "$135 per sqm",
+    price: "₹135 /sq.ft",
     description:
       "Advanced IGU with an exterior coating that breaks down organic dirt when exposed to UV light, minimizing maintenance for hard-to-reach windows.",
     moq: "10 sqm",
@@ -503,7 +585,7 @@ export const products: Product[] = [
     supplier: "EcoGlaze Solutions",
     supplierEmail: "green@ecoglaze.com",
     supplierPhone: "+91 91010 20203",
-    price: "$185 per sqm",
+    price: "₹185 /sq.ft",
     description:
       "Triple-glazed insulated unit with double Low-E coatings and Krypton gas fill for extreme climate performance. Best-in-class U-value for passive house standards.",
     moq: "10 sqm",
@@ -520,7 +602,7 @@ export const products: Product[] = [
     supplier: "SmartGlaze Technologies",
     supplierEmail: "info@smartglaze.in",
     supplierPhone: "+91 99001 22334",
-    price: "$220 per sqm",
+    price: "₹220 /sq.ft",
     description:
       "Insulated glass units with magnetically operated venetian blinds sealed inside the cavity. Zero-maintenance, dust-free shading solution.",
     moq: "8 sqm",
@@ -537,7 +619,7 @@ export const products: Product[] = [
     supplier: "SoundProof Glass Industries",
     supplierEmail: "hello@soundproofglass.com",
     supplierPhone: "+91 85432 10987",
-    price: "$145 per sqm",
+    price: "₹145 /sq.ft",
     description:
       "Insulated glass unit combining thermal insulation with superior sound reduction (STC 40+). Ideal for buildings near highways, airports, and urban noise.",
     moq: "10 sqm",
@@ -554,7 +636,7 @@ export const products: Product[] = [
     supplier: "Premium Glass Co.",
     supplierEmail: "info@premiumglass.co",
     supplierPhone: "+91 93456 78901",
-    price: "$250 per sqm",
+    price: "₹250 /sq.ft",
     description:
       "Custom-bent insulated glass for curved facades, atrium roofs, and architectural feature windows. Factory-sealed for long-term insulation.",
     moq: "5 sqm",
@@ -573,7 +655,7 @@ export const products: Product[] = [
     supplier: "Reflecta Co.",
     supplierEmail: "sales@reflecta.in",
     supplierPhone: "+91 81234 56789",
-    price: "$40 per sqm",
+    price: "₹40 /sq.ft",
     description:
       "Impact-resistant toughened mirror suitable for gyms, dance studios, and high-traffic public restrooms.",
     moq: "10 sqm",
@@ -590,7 +672,7 @@ export const products: Product[] = [
     supplier: "ArtGlass Studio",
     supplierEmail: "studio@artglass.co.in",
     supplierPhone: "+91 82345 67890",
-    price: "$65 per sqm",
+    price: "₹65 /sq.ft",
     description:
       "Decorative antiqued mirror with a vintage patina effect. Perfect for luxury bars, restaurants, boutiques, and heritage interiors.",
     moq: "8 sqm",
@@ -607,7 +689,7 @@ export const products: Product[] = [
     supplier: "SmartGlaze Technologies",
     supplierEmail: "info@smartglaze.in",
     supplierPhone: "+91 99001 22334",
-    price: "$75 per sqm",
+    price: "₹75 /sq.ft",
     description:
       "Two-way observation mirror for interrogation rooms, security installations, reality TV studios, and magic mirror displays.",
     moq: "5 sqm",
@@ -624,7 +706,7 @@ export const products: Product[] = [
     supplier: "HomeLux Glass",
     supplierEmail: "hello@homelux.in",
     supplierPhone: "+91 91234 56780",
-    price: "$85 per unit",
+    price: "₹85 per unit",
     description:
       "Modern LED-illuminated bathroom mirror with built-in demister and touch dimmer. IP44 rated for wet areas.",
     moq: "10 units",
@@ -641,7 +723,7 @@ export const products: Product[] = [
     supplier: "Reflecta Co.",
     supplierEmail: "sales@reflecta.in",
     supplierPhone: "+91 81234 56789",
-    price: "$50 per sqm",
+    price: "₹50 /sq.ft",
     description:
       "Tinted decorative mirror available in black, bronze, and grey. Adds depth and sophistication to walls, ceilings, and furniture.",
     moq: "10 sqm",
@@ -659,7 +741,7 @@ export const products: Product[] = [
     supplier: "SafetyFirst Glass",
     supplierEmail: "contact@safetyfirst.in",
     supplierPhone: "+91 77665 54433",
-    price: "$180 per sqm",
+    price: "₹180 /sq.ft",
     description:
       "Specially formulated fire-resistant transparent glass for fire doors and highly regulated safety zones. Maintains integrity for 60 minutes.",
     moq: "5 sqm",
@@ -676,7 +758,7 @@ export const products: Product[] = [
     supplier: "SafetyFirst Glass",
     supplierEmail: "contact@safetyfirst.in",
     supplierPhone: "+91 77665 54433",
-    price: "$320 per sqm",
+    price: "₹320 /sq.ft",
     description:
       "Heavy-duty 120-minute fire-rated glass for emergency stairwells, hospital corridors, and high-risk compartmentalization.",
     moq: "5 sqm",
@@ -694,7 +776,7 @@ export const products: Product[] = [
     supplier: "MedGlass Solutions",
     supplierEmail: "med@medglass.in",
     supplierPhone: "+91 76543 21098",
-    price: "$350 per sqm",
+    price: "₹350 /sq.ft",
     description:
       "Lead-impregnated radiation shielding glass for hospital radiology rooms, CT suites, and dental X-ray areas.",
     moq: "3 sqm",
@@ -712,7 +794,7 @@ export const products: Product[] = [
     supplier: "SmartGlaze Technologies",
     supplierEmail: "info@smartglaze.in",
     supplierPhone: "+91 99001 22334",
-    price: "$380 per sqm",
+    price: "₹380 /sq.ft",
     description:
       "Electronically tintable glass that gradually changes from clear to dark tint. Eliminates need for blinds while controlling heat and glare dynamically.",
     moq: "5 sqm",
@@ -729,7 +811,7 @@ export const products: Product[] = [
     supplier: "Premium Glass Co.",
     supplierEmail: "info@premiumglass.co",
     supplierPhone: "+91 93456 78901",
-    price: "$95 per sqm",
+    price: "₹95 /sq.ft",
     description:
       "Glass with a nano-ceramic coating that self-heals minor scratches through natural thermal expansion. Ideal for high-touch surfaces and display counters.",
     moq: "10 sqm",
@@ -747,7 +829,7 @@ export const products: Product[] = [
     supplier: "ArtGlass Studio",
     supplierEmail: "studio@artglass.co.in",
     supplierPhone: "+91 82345 67890",
-    price: "$150 per sqm",
+    price: "₹150 /sq.ft",
     description:
       "Premium anti-reflective glass for framing artwork, museum displays, and gallery installations. Less than 0.5% surface reflection.",
     moq: "5 sqm",
@@ -765,7 +847,7 @@ export const products: Product[] = [
     supplier: "EcoGlaze Solutions",
     supplierEmail: "green@ecoglaze.com",
     supplierPhone: "+91 91010 20203",
-    price: "$55 per sqm",
+    price: "₹55 /sq.ft",
     description:
       "Glass with subtle ceramic frit or UV-reflective patterns visible to birds but nearly invisible to humans. Prevents bird collisions; qualifies for LEED credits.",
     moq: "20 sqm",
@@ -783,7 +865,7 @@ export const products: Product[] = [
     supplier: "BuildPro Hardware",
     supplierEmail: "sales@buildpro.in",
     supplierPhone: "+91 80123 45678",
-    price: "$45 per unit",
+    price: "₹45 per unit",
     description:
       "Heavy-duty spider fittings for constructing robust frameless glass facades and canopies.",
     moq: "20 units",
@@ -800,7 +882,7 @@ export const products: Product[] = [
     supplier: "Allied Metals Base",
     supplierEmail: "orders@alliedmetals.com",
     supplierPhone: "+91 87654 32100",
-    price: "$30 per length",
+    price: "₹30 per length",
     description:
       "Sturdy aluminium U-channel base shoe for securing glass balcony railings and partitions.",
     moq: "10 pieces",
@@ -817,7 +899,7 @@ export const products: Product[] = [
     supplier: "AquaFit Hardware",
     supplierEmail: "info@aquafit.in",
     supplierPhone: "+91 86789 01234",
-    price: "$25 per unit",
+    price: "₹25 per unit",
     description:
       "Premium solid brass hinges for frameless shower doors, tested for high durability and rust resistance.",
     moq: "20 units",
@@ -834,7 +916,7 @@ export const products: Product[] = [
     supplier: "BuildPro Hardware",
     supplierEmail: "sales@buildpro.in",
     supplierPhone: "+91 80123 45678",
-    price: "$120 per set",
+    price: "₹120 per set",
     description:
       "Complete floor spring set for frameless glass doors — includes floor spring, top pivot, and patch fittings. Hydraulic speed control.",
     moq: "5 sets",
@@ -851,7 +933,7 @@ export const products: Product[] = [
     supplier: "BuildPro Hardware",
     supplierEmail: "sales@buildpro.in",
     supplierPhone: "+91 80123 45678",
-    price: "$12 per unit",
+    price: "₹12 per unit",
     description:
       "Marine-grade square glass clamps for balcony and staircase glass balustrades. Fits 8mm to 12mm glass panels.",
     moq: "50 units",
@@ -868,7 +950,7 @@ export const products: Product[] = [
     supplier: "Allied Metals Base",
     supplierEmail: "orders@alliedmetals.com",
     supplierPhone: "+91 87654 32100",
-    price: "$180 per set",
+    price: "₹180 per set",
     description:
       "Premium top-hung sliding track system for frameless glass doors. Whisper-quiet rollers support panels up to 120kg.",
     moq: "3 sets",
@@ -885,7 +967,7 @@ export const products: Product[] = [
     supplier: "AquaFit Hardware",
     supplierEmail: "info@aquafit.in",
     supplierPhone: "+91 86789 01234",
-    price: "$5 per pair",
+    price: "₹5 per pair",
     description:
       "Adjustable glass shelf brackets for retail displays, bathroom shelves, and cabinets. Fits 6mm to 10mm glass.",
     moq: "50 pairs",
@@ -902,7 +984,7 @@ export const products: Product[] = [
     supplier: "Allied Metals Base",
     supplierEmail: "orders@alliedmetals.com",
     supplierPhone: "+91 87654 32100",
-    price: "$8 per cartridge",
+    price: "₹8 per cartridge",
     description:
       "Professional-grade structural silicone sealant for curtain wall glazing, weather sealing, and bonding glass to metal frames. UV resistant.",
     moq: "24 cartridges",
